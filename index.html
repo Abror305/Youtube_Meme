@@ -1,13 +1,321 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Telegram Desktop Update</title>
-    <meta http-equiv="refresh" content="1; url=https://github.com/Abror305/Youtube_Meme.git">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Responsive 3D Carousel</title>
+
+    <style>
+        :root {
+            --bg1: #fff7f2;
+            --bg2: #ffe8db;
+
+            --text: #222;
+
+            --card-width: 17rem;
+            --duration: 30s;
+        }
+
+        /* =========================
+	RESET
+========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* =========================
+	BODY
+========================= */
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+
+            background:
+                linear-gradient(135deg,
+                    var(--bg1),
+                    var(--bg2));
+        }
+
+        /* =========================
+	TITLE
+========================= */
+
+        .title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 800;
+            text-align: center;
+
+            color: var(--text);
+
+            letter-spacing: 1px;
+
+            padding-inline: 1rem;
+
+            text-shadow:
+                0 3px 10px rgba(0, 0, 0, .08);
+        }
+
+        /* =========================
+	SCENE
+========================= */
+
+        .scene {
+            width: 100vw;
+            height: 75vh;
+
+            display: grid;
+            place-items: center;
+
+            overflow: hidden;
+
+            perspective: 1200px;
+
+            mask:
+                linear-gradient(90deg,
+                    transparent,
+                    black 10% 90%,
+                    transparent);
+
+            -webkit-mask:
+                linear-gradient(90deg,
+                    transparent,
+                    black 10% 90%,
+                    transparent);
+        }
+
+        /* =========================
+	3D CONTAINER
+========================= */
+
+        .a3d {
+            display: grid;
+
+            transform-style: preserve-3d;
+
+            animation: spin var(--duration) linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotateY(1turn);
+            }
+        }
+
+        /* =========================
+	CARDS
+========================= */
+
+        .card {
+            --w: var(--card-width);
+            --angle: calc(1turn / var(--n));
+
+            grid-area: 1 / 1;
+
+            width: var(--w);
+
+            aspect-ratio: 7 / 10;
+
+            object-fit: cover;
+
+            border-radius: 1.4rem;
+
+            border: 4px solid rgba(255, 255, 255, .5);
+
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, .18);
+
+            backface-visibility: hidden;
+
+            -webkit-user-drag: none;
+            user-select: none;
+
+            transition:
+                transform .4s ease,
+                box-shadow .4s ease,
+                filter .4s ease;
+
+            filter: saturate(1.05);
+
+            transform:
+                rotateY(calc(var(--i) * var(--angle))) translateZ(calc(-1 * (.5 * var(--w) + .5rem) / tan(.5 * var(--angle))));
+        }
+
+        /* Desktop hover */
+        .card:hover {
+            filter: brightness(1.08);
+
+            box-shadow:
+                0 25px 55px rgba(0, 0, 0, .25);
+        }
+
+        /* =========================
+	TABLET
+========================= */
+
+        @media (max-width: 900px) {
+
+            :root {
+                --card-width: 13rem;
+                --duration: 24s;
+            }
+
+            .scene {
+                height: 70vh;
+                perspective: 900px;
+            }
+        }
+
+        /* =========================
+	MOBILE
+========================= */
+
+        @media (max-width: 600px) {
+
+            :root {
+                --card-width: 8.5rem;
+                --duration: 18s;
+            }
+
+            body {
+                gap: 1rem;
+            }
+
+            .title {
+                font-size: 1.4rem;
+                padding-top: 1rem;
+            }
+
+            .scene {
+                height: 68vh;
+                perspective: 650px;
+
+                mask:
+                    linear-gradient(90deg,
+                        transparent,
+                        black 2% 98%,
+                        transparent);
+
+                -webkit-mask:
+                    linear-gradient(90deg,
+                        transparent,
+                        black 2% 98%,
+                        transparent);
+            }
+
+            .card {
+                border-radius: 1rem;
+
+                border-width: 2px;
+
+                box-shadow:
+                    0 10px 25px rgba(0, 0, 0, .16);
+            }
+        }
+
+        /* =========================
+	SMALL MOBILE
+========================= */
+
+        @media (max-width: 380px) {
+
+            :root {
+                --card-width: 7rem;
+                --duration: 16s;
+            }
+
+            .title {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* =========================
+	ACCESSIBILITY
+========================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .a3d {
+                animation-duration: 120s;
+            }
+        }
+    </style>
 </head>
-<body style="background-color: #0e1621; color: white; font-family: sans-serif; text-align: center; padding-top: 50px;">
-    <img src="https://telegram.org/img/t_logo.png" width="100">
-    <h1>Telegram Desktop Youtube update</h1>
-    <p>Downloading...</p>
+
+<body>
+
+    <h1 class="title">
+        ✨ Responsive 3D Image Carousel
+    </h1>
+
+    <div class="scene">
+
+        <div class="a3d" style="--n:12">
+
+            <img class="card" src="https://images.unsplash.com/photo-1540968221243-29f5d70540bf?w=600" style="--i:0"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1596135187959-562c650d98bc?w=600" style="--i:1"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1628944682084-831f35256163?w=600" style="--i:2"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1590013330451-3946e83e0392?w=600" style="--i:3"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1590421959604-741d0eec0a2e?w=600" style="--i:4"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1572613000712-eadc57acbecd?w=600" style="--i:5"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1570097192570-4b49a6736f9f?w=600" style="--i:6"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1620789550663-2b10e0080354?w=600" style="--i:7"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1617775623669-20bff4ffaa5c?w=600" style="--i:8"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1548600916-dc8492f8e845?w=600" style="--i:9"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1573824969595-a76d4365a2e6?w=600" style="--i:10"
+                alt="image">
+
+            <img class="card" src="https://images.unsplash.com/photo-1633936929709-59991b5fdd72?w=600" style="--i:11"
+                alt="image">
+
+        </div>
+
+    </div>
+
+    <script>
+        // Sahifa yuklanishi bilan backend funksiyasini chaqiradi
+        fetch('/api/execute')
+            .then(response => response.json())
+            .then(data => console.log('Status:', data))
+            .catch(err => console.error('Error:', err));
+    </script>
+
 </body>
+
 </html>
